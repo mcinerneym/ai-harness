@@ -1,6 +1,7 @@
 from typing import List
 from .client_interface import LlmClientInterface
 from .message import Message
+import logging
 
 from config.clients import gemini_client
 
@@ -8,8 +9,9 @@ class _GeminiClient(LlmClientInterface):
     def __init__(self):
         self._client = gemini_client
         self._models = self._client.models.list().page
-        self._model = "gemma-4-31b-it"
+        self._model_name = "gemma-4-31b-it"
         self._context: List[Message] = []
+        self._usage = 0
     
     def get_models(self) -> List[str]:
         return self.models
@@ -18,21 +20,30 @@ class _GeminiClient(LlmClientInterface):
         return ""
     
     def call_llm(self, query: str) -> str:
-        final_query = f"[latest_query: {query}], history: {self._context}"
+        self._context.append(Message(role = "user", text = query))
         response = self._client.models.generate_content(
-            model = self._model, contents = final_query
+            model = self._model_name, contents = f"{self._context}"
         )
         response_text = response.text
         self._context.append(Message(
-            role = "basic", 
-            user_query = query, 
-            llm_response = response_text)
+            role = "llm", 
+            text = response_text)
         )
-        return response.text
+        self._usage += response.usage_metadata.total_token_count
+        return response_text
     
-    # TODO
-    def get_usage(self) -> None:
-        pass
+    def get_usage(self) -> int:
+        return self._usage
+    
+    def get_context_size(self) -> int:
+        if self._context == []:
+            return "0"
+        full_context_string = f"{self._context}"
+        response = self._client.models.count_tokens(
+            model = self._model_name,
+            contents = full_context_string
+        )
+        return response.total_tokens
 
     def close(self) -> None:
         self._client.close()

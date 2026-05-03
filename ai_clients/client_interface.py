@@ -16,7 +16,7 @@ class LlmClientInterface(ABC):
         pass
 
     @abstractmethod
-    def get_usage(self) -> str:
+    def get_usage(self) -> int:
         pass
 
     @abstractmethod
