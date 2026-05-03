@@ -1,7 +1,6 @@
 from typing import List
 from rich.console import Console
 from rich.panel import Panel
-from llm.api import call_llm, get_models
 from ai_clients.gemini import gemini_class
 from ai_clients.client_interface import LlmClientInterface
 
