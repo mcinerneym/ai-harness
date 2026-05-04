@@ -1,0 +1,4 @@
+
+SYSTEM_CONSOLE_COLOR = "green"
+MODEL_CONSOLE_COLOR = "blue"
+USER_CONSOLE_COLOR = "orange"

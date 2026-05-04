@@ -1,4 +1,4 @@
-from llm.loop import llm_loop
+from harness.loop import llm_loop
 
 def main():
     llm_loop()

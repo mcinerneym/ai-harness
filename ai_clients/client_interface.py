@@ -4,7 +4,7 @@ from typing import List
 class LlmClientInterface(ABC):
     
     @abstractmethod
-    def call_llm(self) -> str:
+    def call_llm(self, query: str, model: str) -> tuple[str, int]:
         pass
 
     @abstractmethod
@@ -12,13 +12,9 @@ class LlmClientInterface(ABC):
         pass
 
     @abstractmethod
-    def select_model(self, model_name: str):
-        pass
-
-    @abstractmethod
-    def get_usage(self) -> int:
-        pass
-
-    @abstractmethod
     def close(self) -> None:
+        pass
+
+    @abstractmethod
+    def get_context_size(self, context: str) -> int:
         pass
