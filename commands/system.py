@@ -17,3 +17,8 @@ def get_usage(client: Agent) -> str:
 def get_context_size(client: Agent) -> str:
     context_size = client.get_context_size()
     return f"Current Context Size: {bold(f"{context_size}" + " tokens")}"
+
+@harness_command("clear", "Clear the context being used by the Agent to start fresh")
+def clear_context(client: Agent) -> str:
+    client.clear_current_context()
+    return "Context cleared"

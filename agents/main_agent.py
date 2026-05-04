@@ -26,8 +26,11 @@ class Agent:
     def get_context_size(self) -> int:
         if not self._context:
             return 0
-        return self._client.get_context_size(f"{self._context}")
+        return self._client.get_context_size(f"{self._context}", self._model)
     
     def close_client(self) -> None:
         self._client.close()
+
+    def clear_current_context(self) -> None:
+        self._context = []
         
