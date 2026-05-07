@@ -28,6 +28,10 @@ class Agent:
             return 0
         return self._client.get_context_size(f"{self._context}", self._model)
     
+    def change_model_and_client(self, model_name: str, client: LlmClientInterface) -> None:
+        self._client = client
+        self._model = model_name
+    
     def close_client(self) -> None:
         self._client.close()
 

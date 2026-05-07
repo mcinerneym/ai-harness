@@ -1,6 +1,7 @@
 from .registry import harness_command
 from agents.main_agent import Agent
 from config.markdown_format import *
+from ai_clients.factory import llmClientFactory
 
 @harness_command("exit", "Exit the program")
 def exit_harness(client: Agent) -> str:
@@ -22,3 +23,13 @@ def get_context_size(client: Agent) -> str:
 def clear_context(client: Agent) -> str:
     client.clear_current_context()
     return "Context cleared"
+
+@harness_command("models", "Get all Models available for use")
+def get_models(client: Agent) -> str:
+    return_message = f"Current model for agent is {bold(client._model)}.\n\nFull List of Models:"
+    models = llmClientFactory.list_model_names()
+    for model in models:
+        return_message += f"\n- {model}"
+
+    return return_message
+

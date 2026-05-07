@@ -10,7 +10,10 @@ class _GeminiClient(LlmClientInterface):
         self._models = self._client.models.list().page
     
     def get_models(self) -> List[str]:
-        return self.models
+        model_names = []
+        for model in self._models:
+            model_names.append(str.split(model.name, "/")[-1])
+        return model_names
     
     
     def call_llm(self, query: str, model_name: str) -> tuple[str, int]:
