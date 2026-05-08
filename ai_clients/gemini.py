@@ -24,6 +24,18 @@ class _GeminiClient(LlmClientInterface):
         usage = response.usage_metadata.total_token_count
         return response_text, usage
     
+    def call_llm_stream(self, query: str, model_name: str):
+        try:
+            response = self._client.models.generate_content_stream(
+                model=model_name,
+                contents=query
+            )
+            for chunk in response:
+                if chunk.text:
+                    yield chunk.text
+        except Exception as e:
+            raise e
+    
     def get_context_size(self, context: str, model_name: str) -> int:
         response = self._client.models.count_tokens(
             model = model_name,

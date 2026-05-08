@@ -20,6 +20,22 @@ class Agent:
         self._usage += usage
         return response
     
+    def call_llm_stream(self, query: str) -> str:
+        self._context.append(Message(role = "user", text = query))
+        all_text = ""
+
+        try:
+            for response_chunk in self._client.call_llm_stream(f"{self._context}", self._model):
+                all_text += response_chunk
+                yield response_chunk
+        
+            self._context.append(Message(
+                role = "llm", 
+                text = all_text)
+            )
+        except Exception as e:
+            raise e
+    
     def get_usage(self) -> int:
         return self._usage
     

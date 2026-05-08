@@ -12,6 +12,10 @@ class LlmClientInterface(ABC):
         pass
 
     @abstractmethod
+    def call_llm_stream(self, query: str, model_name: str):
+        pass
+
+    @abstractmethod
     def close(self) -> None:
         pass
 
