@@ -33,6 +33,8 @@ class _GeminiClient(LlmClientInterface):
             for chunk in response:
                 if chunk.text:
                     yield chunk.text
+                if chunk.usage_metadata:
+                    total_usage = chunk.usage_metadata.total_token_count # TODO: Figure out how to send this back in a good way
         except Exception as e:
             raise e
     
