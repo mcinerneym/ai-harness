@@ -10,8 +10,8 @@ class Agent:
         self._context: List[Message] = context
         self._usage = usage
 
-    def call_llm(self, query: str) -> str:
-        self._context.append(Message(role = "user", text = query))
+    def call_llm(self, query: str, role: str="user") -> str:
+        self._context.append(Message(role = role, text = query))
         response, usage = self._client.call_llm(f"{self._context}", self._model)
         self._context.append(Message(
             role = "llm", 
@@ -20,8 +20,8 @@ class Agent:
         self._usage += usage
         return response
     
-    def call_llm_stream(self, query: str) -> str:
-        self._context.append(Message(role = "user", text = query))
+    def call_llm_stream(self, query: str, role: str="user") -> str:
+        self._context.append(Message(role = role, text = query))
         all_text = ""
 
         try:
