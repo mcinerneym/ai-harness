@@ -19,6 +19,8 @@ def llm_loop():
     console.print(Panel(Markdown("# Welcome to the Harness"), border_style=SYSTEM_CONSOLE_COLOR))
     while True:
         query = console.input("> ")
+        if not query:
+            continue
         if check_command(query.lower()):
             command_response = execute_command(query.lower(), agent)
             console.print(Panel(Markdown(command_response), border_style=SYSTEM_CONSOLE_COLOR))
